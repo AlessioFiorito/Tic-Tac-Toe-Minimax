@@ -3,4 +3,6 @@ project(Exercices)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Tic-Tac-Toe-Minimax main.cpp)
+add_executable(Tic-Tac-Toe-Minimax main.cpp
+        functions.h
+        functions.cpp)
