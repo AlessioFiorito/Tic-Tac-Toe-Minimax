@@ -21,17 +21,21 @@ int main() {
         draw_grid(grid);
         if(has_someone_won(grid)) {
             is_running = false;
+            break;
         }
         if(is_draw(grid)) {
             is_running = false;
+            break;
         }
         ai_turn(grid);
         draw_grid(grid);
         if(has_someone_won(grid)) {
             is_running = false;
+            break;
         }
         if(is_draw(grid)) {
             is_running = false;
+            break;
         }
     }
 

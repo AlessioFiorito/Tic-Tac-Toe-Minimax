@@ -73,4 +73,33 @@ void ai_turn(std::array<char, 9>& grid) {
 
     grid[ai_position] = 'O';
 }
+int evaluating_grid(const std::array<char, 9> &grid) {
+    //evaluating rows
+    for(int i = 0; i < 9; i+=3) {
+        if(grid[i] == grid[i+1] && grid[i+1] == grid[i+2]) {
+            if(grid[i] == 'O') return 10;
+            if(grid[i] == 'X') return -10;
+        }
+    }
+    //evaluating columns
+    for(int i = 0; i < 3; ++i) {
+        if(grid[i] == grid[i+3] && grid[i+3] == grid[i+6]) {
+            if(grid[i] == 'O') return 10;
+            if(grid[i] == 'X') return -10;
+        }
+    }
+    //evaluating diags
+    if (grid[0] == grid[4] && grid[4] == grid[8]) {
+        if (grid[0] == 'O') return 10;
+        if (grid[0] == 'X') return -10;
+    }
+    if (grid[2] == grid[4] && grid[4] == grid[6]) {
+        if (grid[2] == 'O') return 10;
+        if (grid[2] == 'X') return -10;
+    }
+
+    //if no winner
+    return 0;
+}
+
 
