@@ -1,2 +1,2 @@
 # Tic-Tac-Toe-Minimax
-Tic-Tac-Toe game in C++, using the minimax algorithm
+Tic-Tac-Toe game in C++, using the minimax algorithm (alpha-beta prunning)
