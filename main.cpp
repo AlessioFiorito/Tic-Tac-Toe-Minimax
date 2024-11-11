@@ -23,7 +23,8 @@ int main() {
             is_running = false;
             break;
         }
-        if(is_draw(grid)) {
+        if (is_draw(grid)) {
+            std::cout << "It's a draw!" << std::endl;
             is_running = false;
             break;
         }
@@ -33,7 +34,8 @@ int main() {
             is_running = false;
             break;
         }
-        if(is_draw(grid)) {
+        if (is_draw(grid)) {
+            std::cout << "It's a draw!" << std::endl;
             is_running = false;
             break;
         }

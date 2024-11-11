@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <random>
 
+int nombre_coups_explores = 0;
+
 void draw_grid(const std::array<char, 9>& grid) {
     for (int i = 0; i < 9; i += 3) {
         std::cout << " " << std::setw(2) << grid[i] << " | "
@@ -52,29 +54,39 @@ bool has_someone_won(const std::array<char, 9>& grid) {
     }
     return false;
 }
-bool is_draw(const std::array<char, 9> &grid) {
-    for(char c : grid) {
-        if(c == ' ') {
+bool is_draw(const std::array<char, 9>& grid) {
+    for (char c : grid) {
+        if (c == ' ') {
             return false;
         }
     }
-    std::cout << "It's a draw !" << std::endl;
     return true;
 }
 void ai_turn(std::array<char, 9>& grid) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 8);
+    nombre_coups_explores = 0;
+    int meilleurScore = INT_MIN;
+    int meilleurCoup = -1;
 
-    int ai_position;
-    do {
-        ai_position = dis(gen);
-    } while (grid[ai_position] != ' ');
+    for (int i = 0; i < 9; i++) {
+        if (grid[i] == ' ') {
+            grid[i] = 'O';
+            int score = minimax(grid, 0, false, INT_MIN, INT_MAX);
+            grid[i] = ' ';
 
-    grid[ai_position] = 'O';
+            if (score > meilleurScore) {
+                meilleurScore = score;
+                meilleurCoup = i;
+            }
+        }
+    }
+
+    if (meilleurCoup != -1) {
+        grid[meilleurCoup] = 'O';
+    }
+
+    std::cout << "Number of possibilites explored : " << nombre_coups_explores << std::endl;
 }
 int evaluating_grid(const std::array<char, 9> &grid) {
-    //evaluating rows
     for(int i = 0; i < 9; i+=3) {
         if(grid[i] == grid[i+1] && grid[i+1] == grid[i+2]) {
             if(grid[i] == 'O') return 10;
@@ -101,5 +113,40 @@ int evaluating_grid(const std::array<char, 9> &grid) {
     //if no winner
     return 0;
 }
+int minimax(std::array<char, 9>& grid, int profondeur, bool isMax, int alpha, int beta) {
+    nombre_coups_explores++;
 
+    int score = evaluating_grid(grid);
 
+    if (score == 10) return score - profondeur;
+    if (score == -10) return score + profondeur;
+    if (is_draw(grid)) return 0;
+
+    if (isMax) {
+        int meilleurScore = INT_MIN;
+        for (int i = 0; i < 9; i++) {
+            if (grid[i] == ' ') {
+                grid[i] = 'O';
+                int valeur = minimax(grid, profondeur + 1, false, alpha, beta);
+                grid[i] = ' ';
+                meilleurScore = std::max(meilleurScore, valeur);
+                alpha = std::max(alpha, meilleurScore);
+                if (beta <= alpha) break;
+            }
+        }
+        return meilleurScore;
+    } else {
+        int meilleurScore = INT_MAX;
+        for (int i = 0; i < 9; i++) {
+            if (grid[i] == ' ') {
+                grid[i] = 'X';
+                int valeur = minimax(grid, profondeur + 1, true, alpha, beta);
+                grid[i] = ' ';
+                meilleurScore = std::min(meilleurScore, valeur);
+                beta = std::min(beta, meilleurScore);
+                if (beta <= alpha) break;
+            }
+        }
+        return meilleurScore;
+    }
+}
