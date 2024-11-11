@@ -8,6 +8,7 @@ int get_player_position();
 bool has_someone_won(const std::array<char,9>& grid);
 bool is_draw(const std::array<char,9>& grid);
 void ai_turn(std::array<char,9>& grid);
+int evaluating_grid(const std::array<char,9>& grid);
 
 
 #endif FUNCTIONS.H
